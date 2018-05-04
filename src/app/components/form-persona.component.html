@@ -1,0 +1,27 @@
+<div style="padding-left: 2em;">
+  <div class="fex-v">
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Nombre" [(ngModel)]="persona.name">
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Email" [(ngModel)]="persona.mail">
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-select placeholder="Sexo" [(ngModel)]="persona.sexo">
+          <mat-option *ngFor="let sexo of listaSexos" [value]="sexo.value">
+            {{ sexo.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="flex-h">
+      <button mat-raised-button color="accent" (click)="aceptar()">Aceptar</button>
+      <button mat-raised-button color="warn" (click)="cancelar()" style="padding-left: 1em;">Cancelar</button>
+    </div>
+  </div>
+</div>
