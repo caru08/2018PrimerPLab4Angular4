@@ -18,7 +18,6 @@ if($method == "OPTIONS") {
 
 $app->get("/pruebas", function() use($app, $db){
     echo "hola mundo";
-    var_dump($db);
 });
 
 //GUARDAR PERSONAS
@@ -45,7 +44,7 @@ $app->post('/personas', function() use($app, $db){
             "'{$data['sex']}',".
             "'{$data['image']}'".
             ");";
-    
+
     $insert = $db->query($query);
     $result = array(
         'status' => 'error',
@@ -113,7 +112,7 @@ $app->get('/delete-personas/:id', function($id) use($app, $db){
         'code' => 404,
         'message' => 'No se elimino la persona o no existe'
     );
-    var_dump($query);
+
     if($query){
         $result = array(
             'status' => 'success',
@@ -135,7 +134,6 @@ $app->post('/update-personas/:id', function($id) use($app, $db){
             "WHERE id = ".$id.";";
 
     $query = $db->query($sql);
-    var_dump($sql);
 
     $result = array(
         'status' => 'error',
