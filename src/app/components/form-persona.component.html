@@ -1,27 +1,30 @@
 <div style="padding-left: 2em;">
-  <div class="fex-v">
+  <form #formPersona="ngForm" class="fex-v">
     <div>
       <mat-form-field>
-        <input matInput placeholder="Nombre" [(ngModel)]="persona.name">
+        <input matInput placeholder="Nombre" #name="ngModel" name="name" [(ngModel)]="persona.name" required>
       </mat-form-field>
+      <span class="label-danger" *ngIf="!name.valid && name.touched">Nombre requerido o invalido</span>
     </div>
     <div>
       <mat-form-field>
-        <input matInput placeholder="Email" [(ngModel)]="persona.mail">
+        <input matInput type="email" placeholder="Email" #email="ngModel" name="email" [(ngModel)]="persona.email" required>
       </mat-form-field>
+      <span class="label-danger" *ngIf="!email.valid && email.touched">Email requerido o invalido</span>
     </div>
     <div>
       <mat-form-field>
-        <mat-select placeholder="Sexo" [(ngModel)]="persona.sexo">
+        <mat-select placeholder="Sexo" #sex="ngModel" name="sex" [(ngModel)]="persona.sex" required>
           <mat-option *ngFor="let sexo of listaSexos" [value]="sexo.value">
             {{ sexo.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <span class="label-danger" *ngIf="!sex.valid && sex.touched">Sexo requerido</span>
     </div>
     <div class="flex-h">
-      <button mat-raised-button color="accent" (click)="aceptar()">Aceptar</button>
+      <button mat-raised-button color="accent" [disabled]="!formPersona.valid" (click)="aceptar()">Aceptar</button>
       <button mat-raised-button color="warn" (click)="cancelar()" style="padding-left: 1em;">Cancelar</button>
     </div>
-  </div>
+  </form>
 </div>

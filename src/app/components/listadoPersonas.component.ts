@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PersonasService } from '../services/personas.service';
 
 @Component({
   selector: 'app-listado-personas',
@@ -8,15 +9,15 @@ import { Component, OnInit } from '@angular/core';
 export class ListadoPersonasComponent implements OnInit {
 
   public listadoPersonas  = new Array<any>();
-  public showForm:boolean = false;
-  public personaSeleccionada:any = {};
+  public showForm: boolean;
+  public personaSeleccionada: any = {};
+
+  constructor(private personasService: PersonasService){
+    this.showForm = false;
+  }
 
   ngOnInit() {
-    this.listadoPersonas.push({id: '1', name: 'Pepe', mail: 'pepe@gmail.com', sexo: 'masculino', password: '123456'});
-    this.listadoPersonas.push({id: '2', name: 'Carla', mail: 'carla@gmail.com', sexo: 'femenino', password: '123456'});
-    this.listadoPersonas.push({id: '3', name: 'Juan', mail: 'juan@gmail.com', sexo: 'masculino', password: '123456'});
-    this.listadoPersonas.push({id: '4', name: 'Ponsa', mail: 'ponsa@gmail.com', sexo: 'masculino', password: '123456'});
-    this.listadoPersonas.push({id: '5', name: 'Sabrina', mail: 'sabrina@gmail.com', sexo: 'femenino', password: '123456'});
+    this.getProductos();
   }
 
   editarPersona(persona, event) {
@@ -24,9 +25,33 @@ export class ListadoPersonasComponent implements OnInit {
     this.personaSeleccionada['showForm'] = event.checked;
   }
 
+  borrarPersona(persona) {
+    this.personasService.borrarPersona(persona.id).subscribe((response) => {
+      alert('se borro correctamente');
+    }, (error) => {
+      console.log('error al borrar la persona' + persona.name);
+    });
+  }
+
+  close(action) {
+    if (action !== 'cancel') {
+      this.getProductos();
+    }
+    this.personaSeleccionada = {};
+    this.personaSeleccionada['showForm'] = false;
+  }
+
   agregarNuevaPersona() {
     this.personaSeleccionada = {};
     this.personaSeleccionada['showForm'] = true;
   }
 
+
+  private getProductos() {
+    this.personasService.getPersonas().subscribe((response)=> {
+      this.listadoPersonas = response.data;
+    }, (error) => {
+      console.log("error al pedir las personas", error);
+    });
+  }
 }
