@@ -22,7 +22,11 @@ export class ListadoPersonasComponent implements OnInit {
   editarPersona(persona, event) {
     this.personaSeleccionada = persona;
     this.personaSeleccionada['showForm'] = event.checked;
+  }
 
+  agregarNuevaPersona() {
+    this.personaSeleccionada = {};
+    this.personaSeleccionada['showForm'] = true;
   }
 
 }

@@ -1,25 +1,30 @@
 <div class="first-item flex-h">
-  <div class="flex-50">
+  <div class="flex-50 class-v">
+    <div class="expand-right flex-h">
+      <div class="expand-right flex-h-center" style="padding-right: 1em;">
+        Agregar nueva persona
+      </div>
+      <button mat-mini-fab="primary" (click)="agregarNuevaPersona()" ><mat-icon style="color: white;">add</mat-icon></button>
+    </div>
     <div *ngFor="let persona of listadoPersonas">
       <div class="flex-h flex-100">
         <div class="flex-30 expand-center">
           <img class="image-style" src="../../assets/fotos/{{persona.id}}.jpg">
         </div>
         <div class="flex-50 flex-v">
-          <div>
+          <div class="first-item" >
             {{persona.name}}
           </div>
-          <div class="first-item">
+          <div class="first-item" >
             {{persona.mail}}
           </div>
-          <div class="first-item" [ngClass]="{'female-container': persona.sexo == 'femenino'}">
-            Sexo: {{persona.sexo}}
+          <div class="first-item">
+            <div [ngClass]="{'female-container': persona.sexo == 'femenino'}" >
+              Sexo: {{persona.sexo}}
+            </div>
           </div>
         </div>
         <div class="flex-20 flex-v">
-          <div>
-
-          </div>
           <mat-checkbox (change)="editarPersona(persona, $event)">Editar</mat-checkbox>
         </div>
       </div>
