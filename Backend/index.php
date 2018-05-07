@@ -1,13 +1,16 @@
 <?php
 
 require_once 'vendor/autoload.php';
+require_once 'libraries/scriptator.php';
+
 
 $app = new \Slim\Slim();
 
 $db = new mysqli('localhost', 'root', '', 'primer_parcial_lab4');
 
+
 //CONFIGURACION DE CABECERAS
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: *'); //permite cros domain
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Allow: GET, POST, OPTIONS, PUT, DELETE");
@@ -18,6 +21,7 @@ if($method == "OPTIONS") {
 
 $app->get("/pruebas", function() use($app, $db){
     echo "hola mundo";
+    var_dump($db);
 });
 
 //GUARDAR PERSONAS
@@ -44,7 +48,7 @@ $app->post('/personas', function() use($app, $db){
             "'{$data['sex']}',".
             "'{$data['image']}'".
             ");";
-
+    
     $insert = $db->query($query);
     $result = array(
         'status' => 'error',
@@ -112,7 +116,7 @@ $app->get('/delete-personas/:id', function($id) use($app, $db){
         'code' => 404,
         'message' => 'No se elimino la persona o no existe'
     );
-
+    var_dump($query);
     if($query){
         $result = array(
             'status' => 'success',
@@ -134,6 +138,7 @@ $app->post('/update-personas/:id', function($id) use($app, $db){
             "WHERE id = ".$id.";";
 
     $query = $db->query($sql);
+    var_dump($sql);
 
     $result = array(
         'status' => 'error',
@@ -169,6 +174,42 @@ $app->post('/upload-file', function() use($app, $db){
 
     echo json_encode($result);
 });
+
+$app->get('/login', function() use($app, $db){
+    $user = $app->request->get('user');
+    $pass = $app->request->get('pass');
+    $md5Pass = md5($pass);
+
+    $query = "SELECT * FROM usuarios WHERE ".
+            "name = '$user' AND ".
+            "password = '$md5Pass'";
+    $row = $db->query($query)->fetch_assoc();
+
+    if($row){
+        $tokenToEncrypt = [
+            "id"=>$row['id'],
+            "create_date"=>date('d/m/Y H:i:s')
+        ];
+        $encripted = Scriptator::encrypt($tokenToEncrypt);        
+
+      //  var_dump(Scriptator::decrypt($encripted));
+
+        $result = array(
+            'status' => 'sucess',
+            'code' => 201,
+            'data' => $encripted
+        );
+    }else{
+        $result = array(
+            'status' => 'error',
+            'code' => 404,
+            'message' => 'No existe el usuario'
+        );
+    } 
+    echo json_encode($result);
+
+});
+
 
 $app->run();
 
