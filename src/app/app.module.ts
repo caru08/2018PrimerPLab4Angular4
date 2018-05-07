@@ -18,6 +18,8 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { ROUTES } from './app.routes';
 
 import { PersonasService } from './services/personas.service';
+import { LoginService } from './services/login.service';
+import { InterceptorService } from './services/interceptor.service';
 
 import { AppComponent } from './app.component';
 import { ListadoPersonasComponent } from './components/listadoPersonas.component';
@@ -75,7 +77,9 @@ import { FormPersonaComponent } from './components/form-persona.component';
     })
   ],
   providers: [
-    PersonasService
+    PersonasService,
+    LoginService,
+    InterceptorService
   ],
   bootstrap: [AppComponent]
 })

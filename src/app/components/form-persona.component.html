@@ -14,13 +14,20 @@
     </div>
     <div>
       <mat-form-field>
-        <mat-select placeholder="Sexo" #sex="ngModel" name="sex" [(ngModel)]="persona.sex" required>
-          <mat-option *ngFor="let sexo of listaSexos" [value]="sexo.value">
-            {{ sexo.name }}
-          </mat-option>
-        </mat-select>
+        <input matInput type="password" placeholder="Passwords" #pass="ngModel" name="pass" [(ngModel)]="persona.pass" required>
       </mat-form-field>
-      <span class="label-danger" *ngIf="!sex.valid && sex.touched">Sexo requerido</span>
+      <span class="label-danger" *ngIf="!pass.valid && pass.touched">Email requerido o invalido</span>
+
+
+
+      <!--<mat-form-field>-->
+        <!--<mat-select placeholder="Sexo" #sex="ngModel" name="sex" [(ngModel)]="persona.sex" required>-->
+          <!--<mat-option *ngFor="let sexo of listaSexos" [value]="sexo.value">-->
+            <!--{{ sexo.name }}-->
+          <!--</mat-option>-->
+        <!--</mat-select>-->
+      <!--</mat-form-field>-->
+      <!--<span class="label-danger" *ngIf="!sex.valid && sex.touched">Sexo requerido</span>-->
     </div>
     <div class="flex-h">
       <button mat-raised-button color="accent" [disabled]="!formPersona.valid" (click)="aceptar()">Aceptar</button>

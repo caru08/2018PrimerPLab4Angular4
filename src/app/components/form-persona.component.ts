@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PersonasService } from '../services/personas.service';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-form-persona',
@@ -22,8 +23,8 @@ export class FormPersonaComponent implements OnInit {
     }
   ];
 
-  constructor(private personaService: PersonasService) {
-
+  constructor(private personaService: PersonasService,
+              private loginService: LoginService) {
   }
 
   ngOnInit() {
@@ -33,11 +34,12 @@ export class FormPersonaComponent implements OnInit {
   }
 
   aceptar() {
-    if (this.persona.id) {
-      this.editarPersona();
-    } else {
-      this.agregarPersona();
-    }
+    this.login();
+    // if (this.persona.id) {
+    //   this.editarPersona();
+    // } else {
+    //   this.agregarPersona();
+    // }
   }
 
   cancelar() {
@@ -57,6 +59,16 @@ export class FormPersonaComponent implements OnInit {
     this.personaService.editarPerosna(this.persona).subscribe((response) => {
       alert("se actualizo correctamentes");
       this.closeForm.emit();
+    }, (error) => {
+      console.log("error al guardar la persona", error);
+    });
+  }
+
+  private login(){
+    this.loginService.login().subscribe((response) => {
+      alert("se guardo correctamentes");
+
+      console.log(response);
     }, (error) => {
       console.log("error al guardar la persona", error);
     });

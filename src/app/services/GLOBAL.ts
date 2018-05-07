@@ -1,3 +1,3 @@
 export const GLOBAL = {
-  url : 'http://localhost:8080/PrimerParcialLab4/index.php'
+  url : 'http://localhost/PrimerParcialLab4Backend/index.php'
 }
