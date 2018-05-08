@@ -23,8 +23,7 @@ export class FormPersonaComponent implements OnInit {
     }
   ];
 
-  constructor(private personaService: PersonasService,
-              private loginService: LoginService) {
+  constructor(private personaService: PersonasService ) {
   }
 
   ngOnInit() {
@@ -34,12 +33,11 @@ export class FormPersonaComponent implements OnInit {
   }
 
   aceptar() {
-    this.login();
-    // if (this.persona.id) {
-    //   this.editarPersona();
-    // } else {
-    //   this.agregarPersona();
-    // }
+    if (this.persona.id) {
+      this.editarPersona();
+    } else {
+      this.agregarPersona();
+    }
   }
 
   cancelar() {
@@ -59,16 +57,6 @@ export class FormPersonaComponent implements OnInit {
     this.personaService.editarPerosna(this.persona).subscribe((response) => {
       alert("se actualizo correctamentes");
       this.closeForm.emit();
-    }, (error) => {
-      console.log("error al guardar la persona", error);
-    });
-  }
-
-  private login(){
-    this.loginService.login().subscribe((response) => {
-      alert("se guardo correctamentes");
-
-      console.log(response);
     }, (error) => {
       console.log("error al guardar la persona", error);
     });

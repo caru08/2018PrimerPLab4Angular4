@@ -24,12 +24,14 @@ import { InterceptorService } from './services/interceptor.service';
 import { AppComponent } from './app.component';
 import { ListadoPersonasComponent } from './components/listadoPersonas.component';
 import { FormPersonaComponent } from './components/form-persona.component';
+import { LoginFormComponent } from './components/login-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListadoPersonasComponent,
-    FormPersonaComponent
+    FormPersonaComponent,
+    LoginFormComponent
   ],
   imports: [
     BrowserModule,

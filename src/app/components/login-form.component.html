@@ -1,0 +1,33 @@
+<div class="container" style="padding-top: 50px;">
+
+  <form #formLogin="ngForm">
+    <div class="flex-h-center flex-v">
+      <div class="flex-30"></div>
+      <div class="flex-30">
+        <div class="flex-v">
+          <mat-form-field>
+            <input matInput placeholder="Nombre" #name="ngModel" name="name" [(ngModel)]="user.name" required>
+            <mat-error *ngIf="!name.valid && name.touched">
+            Nombre requerido o invalido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex-v">
+          <mat-form-field>
+            <input matInput placeholder="Contraseña" type="password" #pass="ngModel" name="pass" [(ngModel)]="user.pass" required>
+            <mat-error *ngIf="!pass.valid && pass.touched">
+            Contraseña requerida o invalida
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="first-item">
+          <button mat-raised-button color="primary" class="expand-w" [disabled]="!formLogin.valid" (click)="loginClick()">Aceptar</button>
+        </div>
+        <div class="first-item">
+          <button mat-raised-button color="warn" class="expand-w" (click)="registrarse()" style="padding-left: 1em;">Registrarse</button>
+        </div>
+      </div>
+      <div class="flex-30"></div>
+    </div>
+  </form>
+</div>
