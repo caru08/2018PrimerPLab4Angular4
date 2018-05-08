@@ -8,6 +8,8 @@ $app = new \Slim\Slim();
 
 $db = new mysqli('localhost', 'root', '', 'primer_parcial_lab4');
 
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+
 
 //CONFIGURACION DE CABECERAS
 header('Access-Control-Allow-Origin: *'); //permite cros domain
@@ -186,14 +188,7 @@ $app->get('/login', function() use($app, $db){
     $row = $db->query($query)->fetch_assoc();
 
     if($row){
-        $tokenToEncrypt = [
-            "id"=>$row['id'],
-            "create_date"=>date('d/m/Y H:i:s')
-        ];
-        $encripted = Scriptator::encrypt($tokenToEncrypt);        
-
-      //  var_dump(Scriptator::decrypt($encripted));
-
+        $encripted = Scriptator::createToken($row['id']);
         $result = array(
             'status' => 'sucess',
             'code' => 201,
@@ -209,6 +204,33 @@ $app->get('/login', function() use($app, $db){
     echo json_encode($result);
 
 });
+
+$app->get('/check-login', function() use($app, $db){
+    $user = $app->request->get('token');  
+    $desncriptedToken = Scriptator::decrypt($user);
+
+    $dateNow = new DateTime(date('d/m/Y H:i:s'));
+    $dateToken = new DateTime(date($desncriptedToken->create_date));
+    $interval = date_diff($dateNow, $dateToken);
+    $minutes = $interval->format('%i');
+    $result = array(
+        'status' => 'error',
+        'code' => 404,
+        'message' => 'No hay usuarios logueados'
+    );
+
+    if($minutes < 59){
+        $encripted = Scriptator::createToken($desncriptedToken->id);
+        $result = array(
+            'status' => 'sucess',
+            'code' => 201,
+            'data' => $encripted
+        );  
+    }   
+    echo json_encode($result);
+});
+
+
 
 
 $app->run();
