@@ -29,5 +29,28 @@ class Scriptator {
         return $jsonToEncript; 
     } 
 
+    static public function createToken($id){
+        $tokenToEncrypt = [
+                       "id"=>$id,
+                       "create_date"=>date('d/m/Y H:i:s')
+        ];
+        $encripted = Scriptator::encrypt($tokenToEncrypt);        
+        return $encripted;
+    }
+
+    static public function checkedToken($desncriptedToken){
+        $dateNow = new DateTime(date('d/m/Y H:i:s'));
+        $dateToken = new DateTime(date($desncriptedToken->create_date));
+        $interval = date_diff($dateNow, $dateToken);
+        $minutes = $interval->format('%i');
+
+        if($minutes < 59){
+            $encripted = Scriptator::createToken($desncriptedToken->id);
+           return $encripted;
+        }else{
+            return null;
+        }
+    }
+
   
 }
