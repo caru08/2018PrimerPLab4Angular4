@@ -1,25 +1,40 @@
-<div class="first-item flex-h">
-  <div class="flex-50 class-v">
-    <div class="expand-right flex-h">
-      <div class="expand-right flex-h-center" style="padding-right: 1em;">
+<!--https://www.w3schools.com/icons/fontawesome_icons_webapp.asp-->
+<div class="first-item flex-v flex-100">
+  <!--HEADER BOTONERA-->
+  <div class="flex-h flex-100">
+    <div class="flex-50 flex-h" style="padding-left: 1em;">
+      <button mat-mini-fab="primary" (click)="agregarNuevaPersona()">
+        <mat-icon style="color:white;">add</mat-icon>
+      </button>
+      <div class="flex-h-center" style="padding-left: 1em;">
         Agregar nueva persona
       </div>
-      <button mat-mini-fab="primary" (click)="agregarNuevaPersona()" ><mat-icon style="color: white;">add</mat-icon></button>
     </div>
-    <div *ngFor="let persona of listadoPersonas" class="first-item">
+    <div class="flex-50 expand-right" style="padding-right: 1em;">
+      <div class="flex-h-center" style="padding-right: 1em;">
+        Logout
+      </div>
+      <button mat-mini-fab="primary" (click)="logoutClick()">
+        <i class="fa fa-sign-out" style="font-size:26px"></i>
+      </button>
+    </div>
+  </div>
+  <!--contenido-->
+  <div class="flex-h flex-100">
+    <div class="flex-50 first-item" *ngFor="let persona of listadoPersonas">
       <div class="flex-h flex-100">
         <div class="flex-30 expand-center">
           <img class="image-style" src="../../assets/fotos/{{persona.id}}.jpg">
         </div>
         <div class="flex-50 flex-v">
-          <div class="first-item" >
+          <div class="first-item">
             Nombre: {{persona.name}}
           </div>
-          <div class="first-item" >
+          <div class="first-item">
             Mail: {{persona.email}}
           </div>
           <div class="first-item">
-            <div [ngClass]="{'female-container': persona.sexo == 'femenino'}" >
+            <div [ngClass]="{'female-container': persona.sexo == 'femenino'}">
               Sexo: {{persona.sex}}
             </div>
           </div>
@@ -29,13 +44,15 @@
             <mat-checkbox (change)="editarPersona(persona, $event)">Editar</mat-checkbox>
           </div>
           <div style="padding-left: 1em;">
-            <mat-icon style="color: white;" (click)="borrarPersona(persona)" >delete</mat-icon>
+            <mat-icon style="color: white;" (click)="borrarPersona(persona)">delete</mat-icon>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="flex-50" *ngIf="personaSeleccionada.showForm">
+      <app-form-persona [persona]="personaSeleccionada" (closeForm)="close($event)"></app-form-persona>
+    </div>
   </div>
-  <div class="flex-50" *ngIf="personaSeleccionada.showForm">
-    <app-form-persona [persona]="personaSeleccionada" (closeForm)="close($event)"></app-form-persona>
-  </div>
+
 </div>

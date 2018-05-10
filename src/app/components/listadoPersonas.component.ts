@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonasService } from '../services/personas.service';
+import { LoginService } from '../services/login.service';
+import { SnackMessage } from './../services/snackmessage.service';
+
+import {  Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-listado-personas',
@@ -12,12 +17,19 @@ export class ListadoPersonasComponent implements OnInit {
   public showForm: boolean;
   public personaSeleccionada: any = {};
 
-  constructor(private personasService: PersonasService){
+  constructor(private personasService: PersonasService,
+              private loginService: LoginService,
+              private snackBarMessage: SnackMessage,
+              private router: Router){
     this.showForm = false;
   }
 
   ngOnInit() {
-    this.getProductos();
+    if(this.loginService.isLogged()){
+      this.getPersonas();
+    }else{
+      this.logoutClick();
+    }    
   }
 
   editarPersona(persona, event) {
@@ -27,15 +39,21 @@ export class ListadoPersonasComponent implements OnInit {
 
   borrarPersona(persona) {
     this.personasService.borrarPersona(persona.id).subscribe((response) => {
-      alert('se borro correctamente');
+     this.snackBarMessage.ShowSuccesSnack("Se borro correctamente");
+     this.getPersonas();
     }, (error) => {
-      console.log('error al borrar la persona' + persona.name);
+      this.snackBarMessage.ShowSuccesSnack("Error al borrar la persona: " + persona.name);
     });
+  }
+
+  logoutClick(){
+    this.loginService.logout();
+    this.router.navigate(['./Login' ]);
   }
 
   close(action) {
     if (action !== 'cancel') {
-      this.getProductos();
+      this.getPersonas();
     }
     this.personaSeleccionada = {};
     this.personaSeleccionada['showForm'] = false;
@@ -47,10 +65,11 @@ export class ListadoPersonasComponent implements OnInit {
   }
 
 
-  private getProductos() {
+  private getPersonas() {
     this.personasService.getPersonas().subscribe((response)=> {
       this.listadoPersonas = response.data;
     }, (error) => {
+      this.snackBarMessage.ShowSuccesSnack("Error al consultar las personas");
       console.log("error al pedir las personas", error);
     });
   }

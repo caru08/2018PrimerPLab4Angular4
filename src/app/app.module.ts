@@ -20,6 +20,8 @@ import { ROUTES } from './app.routes';
 import { PersonasService } from './services/personas.service';
 import { LoginService } from './services/login.service';
 import { InterceptorService } from './services/interceptor.service';
+import { SnackMessage } from './services/snackmessage.service';
+
 
 import { AppComponent } from './app.component';
 import { ListadoPersonasComponent } from './components/listadoPersonas.component';
@@ -31,7 +33,7 @@ import { LoginFormComponent } from './components/login-form.component';
     AppComponent,
     ListadoPersonasComponent,
     FormPersonaComponent,
-    LoginFormComponent
+    LoginFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,8 +83,11 @@ import { LoginFormComponent } from './components/login-form.component';
   providers: [
     PersonasService,
     LoginService,
-    InterceptorService
+    InterceptorService,
+    SnackMessage
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[
+  ]
 })
 export class AppModule { }

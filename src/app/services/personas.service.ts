@@ -28,14 +28,14 @@ export class PersonasService {
       let json = JSON.stringify(model);
       let params = 'json=' + json;
       let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-      return this._http.post(this.url + '/update-personas/' + model.id, params, {'headers': headers})
+      return this._http.post(this.url + '/personas/' + model.id + "/update", params, {'headers': headers})
         .map(
           res => this.mapReponse(res)
         );
     }
 
     borrarPersona(id) {
-      return this._http.get(this.url + '/delete-personas/' + id )
+      return this._http.get(this.url + '/personas/' + id + "/delete" )
         .map(
           res => this.mapReponse(res)
         );

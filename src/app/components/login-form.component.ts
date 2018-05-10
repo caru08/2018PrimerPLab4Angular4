@@ -1,3 +1,4 @@
+import { SnackMessage } from './../services/snackmessage.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PersonasService } from '../services/personas.service';
 import { LoginService } from '../services/login.service';
@@ -13,7 +14,8 @@ export class LoginFormComponent implements OnInit {
   public user  = {name: '', pass: ''};
 
   constructor(private router: Router,
-              private loginService: LoginService ){
+              private loginService: LoginService,
+              private snackMessage: SnackMessage ){
   }
 
   ngOnInit(){
@@ -32,7 +34,7 @@ export class LoginFormComponent implements OnInit {
       if(response.code == 201){
         this.router.navigate(['./Listado' ]);
       }else{
-        alert("error al loguearse: " + response.message );
+        this.snackMessage.ShowErrorSnack("error al loguearse: " + response.message);
       }
       console.log(response);
     }, (error) => {

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PersonasService } from '../services/personas.service';
 import { LoginService } from '../services/login.service';
+import { SnackMessage } from './../services/snackmessage.service';
+import {  Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-persona',
@@ -23,12 +25,15 @@ export class FormPersonaComponent implements OnInit {
     }
   ];
 
-  constructor(private personaService: PersonasService ) {
+  constructor(private personaService: PersonasService,
+              private loginService: LoginService,
+              private snackMessage: SnackMessage,
+              private router: Router ) {
   }
 
   ngOnInit() {
-    if (!(this.persona || this.persona.name)) {
-      this.persona = {'nombre': '', 'email': '', 'sex': ''};
+    if (!(this.persona && this.persona.name)) {
+      this.persona = {'name': '', 'email': '', 'sex': ''};
     }
   }
 
@@ -41,23 +46,29 @@ export class FormPersonaComponent implements OnInit {
   }
 
   cancelar() {
-    this.closeForm.emit('cancel');
+    if(this.loginService.isLogged()){
+      this.closeForm.emit('cancel');
+    }else{
+      this.router.navigate(['./Login' ]);
+    }    
   }
 
   private agregarPersona() {
     this.personaService.crearPersona(this.persona).subscribe((response) => {
-      alert("se guardo correctamentes");
+      this.snackMessage.ShowSuccesSnack("Se agrego correctamente");
       this.closeForm.emit();
     }, (error) => {
+      this.snackMessage.ShowSuccesSnack("Error al agregar la persona");
       console.log("error al guardar la persona", error);
     });
   }
 
   private editarPersona() {
     this.personaService.editarPerosna(this.persona).subscribe((response) => {
-      alert("se actualizo correctamentes");
+      this.snackMessage.ShowSuccesSnack("Se edito correctamente");
       this.closeForm.emit();
     }, (error) => {
+      this.snackMessage.ShowSuccesSnack("Error al editar la persona");
       console.log("error al guardar la persona", error);
     });
   }
