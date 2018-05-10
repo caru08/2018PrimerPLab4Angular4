@@ -16,7 +16,7 @@ export class ListadoPersonasComponent implements OnInit {
   public listadoPersonas  = new Array<any>();
   public showForm: boolean;
   public personaSeleccionada: any = {};
-
+  public loading:boolean;
   constructor(private personasService: PersonasService,
               private loginService: LoginService,
               private snackBarMessage: SnackMessage,
@@ -25,11 +25,20 @@ export class ListadoPersonasComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.loginService.isLogged()){
-      this.getPersonas();
-    }else{
+    this.loginService.checkLogin().subscribe((response) => {
+      if(response.code == 201){
+        this.getPersonas();
+      }else{
+        this.logoutClick();
+        console.log("ocurrio un error", response.message);
+        this.loading = false;
+      }
+      console.log(response);
+    }, (error) => {
+      this.loading = false;
       this.logoutClick();
-    }    
+      console.log("ocurrio un error", error);      
+    });      
   }
 
   editarPersona(persona, event) {
@@ -38,11 +47,13 @@ export class ListadoPersonasComponent implements OnInit {
   }
 
   borrarPersona(persona) {
+    this.loading = true;
     this.personasService.borrarPersona(persona.id).subscribe((response) => {
      this.snackBarMessage.ShowSuccesSnack("Se borro correctamente");
      this.getPersonas();
     }, (error) => {
-      this.snackBarMessage.ShowSuccesSnack("Error al borrar la persona: " + persona.name);
+      this.snackBarMessage.ShowErrorSnack("Error al borrar la persona: " + persona.name);
+      this.loading = false;
     });
   }
 
@@ -64,13 +75,15 @@ export class ListadoPersonasComponent implements OnInit {
     this.personaSeleccionada['showForm'] = true;
   }
 
-
   private getPersonas() {
+    this.loading = true;
     this.personasService.getPersonas().subscribe((response)=> {
       this.listadoPersonas = response.data;
+      this.loading = false;
     }, (error) => {
-      this.snackBarMessage.ShowSuccesSnack("Error al consultar las personas");
+      this.snackBarMessage.ShowErrorSnack("Error al consultar las personas");
       console.log("error al pedir las personas", error);
+      this.loading = false;
     });
   }
 }

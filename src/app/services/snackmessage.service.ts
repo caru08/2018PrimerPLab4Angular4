@@ -15,7 +15,7 @@ export class SnackMessage {
 
     ShowSuccesSnack(message){
         this.snackBar.open(message, '', {
-            duration: 4000000, extraClasses: ['success-snackbar']
+            duration: 4000, extraClasses: ['success-snackbar']
         });
     }
 

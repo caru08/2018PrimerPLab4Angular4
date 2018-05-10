@@ -12,6 +12,7 @@ import {  Router } from '@angular/router';
 export class LoginFormComponent implements OnInit {
 
   public user  = {name: '', pass: ''};
+  public loading:boolean;
 
   constructor(private router: Router,
               private loginService: LoginService,
@@ -30,15 +31,19 @@ export class LoginFormComponent implements OnInit {
   }
 
   private login(){
+    this.loading = true;
     this.loginService.login(this.user.name, this.user.pass).subscribe((response) => {
       if(response.code == 201){
         this.router.navigate(['./Listado' ]);
       }else{
         this.snackMessage.ShowErrorSnack("error al loguearse: " + response.message);
       }
+      this.loading = false;
       console.log(response);
     }, (error) => {
-      console.log("error al guardar la persona", error);
+      this.loading = false;
+      this.snackMessage.ShowErrorSnack("error al loguearse: " + error);
+      console.log("error al loguearse", error);
     });
   }
 

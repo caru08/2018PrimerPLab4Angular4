@@ -13,6 +13,7 @@ export class FormPersonaComponent implements OnInit {
 
   @Input() persona: any;
   @Output() closeForm: EventEmitter<any> = new EventEmitter()
+  public loading:boolean;
 
   public listaSexos = [
     {
@@ -38,6 +39,7 @@ export class FormPersonaComponent implements OnInit {
   }
 
   aceptar() {
+    this.loading = true;  
     if (this.persona.id) {
       this.editarPersona();
     } else {
@@ -57,7 +59,10 @@ export class FormPersonaComponent implements OnInit {
     this.personaService.crearPersona(this.persona).subscribe((response) => {
       this.snackMessage.ShowSuccesSnack("Se agrego correctamente");
       this.closeForm.emit();
+      this.router.navigate(['./Listado' ]);
+      this.loading = false;  
     }, (error) => {
+      this.loading = false;  
       this.snackMessage.ShowSuccesSnack("Error al agregar la persona");
       console.log("error al guardar la persona", error);
     });
@@ -67,9 +72,11 @@ export class FormPersonaComponent implements OnInit {
     this.personaService.editarPerosna(this.persona).subscribe((response) => {
       this.snackMessage.ShowSuccesSnack("Se edito correctamente");
       this.closeForm.emit();
+      this.loading = false;  
     }, (error) => {
       this.snackMessage.ShowSuccesSnack("Error al editar la persona");
       console.log("error al guardar la persona", error);
+      this.loading = false;  
     });
   }
 

@@ -1,6 +1,7 @@
 <!--https://www.w3schools.com/icons/fontawesome_icons_webapp.asp-->
 <div class="first-item flex-v flex-100">
   <!--HEADER BOTONERA-->
+  <loader [loading]="loading"></loader>
   <div class="flex-h flex-100">
     <div class="flex-50 flex-h" style="padding-left: 1em;">
       <button mat-mini-fab="primary" (click)="agregarNuevaPersona()">
@@ -21,34 +22,37 @@
   </div>
   <!--contenido-->
   <div class="flex-h flex-100">
-    <div class="flex-50 first-item" *ngFor="let persona of listadoPersonas">
-      <div class="flex-h flex-100">
-        <div class="flex-30 expand-center">
-          <img class="image-style" src="../../assets/fotos/{{persona.id}}.jpg">
-        </div>
-        <div class="flex-50 flex-v">
-          <div class="first-item">
-            Nombre: {{persona.name}}
-          </div>
-          <div class="first-item">
-            Mail: {{persona.email}}
-          </div>
-          <div class="first-item">
-            <div [ngClass]="{'female-container': persona.sexo == 'femenino'}">
-              Sexo: {{persona.sex}}
+    <div class="flex-v flex-50">
+        <div class="first-item" *ngFor="let persona of listadoPersonas">
+            <div class="flex-h flex-100">
+              <div class="flex-30 expand-center">
+                <img class="image-style" src="../../assets/fotos/{{persona.id}}.jpg">
+              </div>
+              <div class="flex-50 flex-v">
+                <div class="first-item">
+                  Nombre: {{persona.name}}
+                </div>
+                <div class="first-item">
+                  Mail: {{persona.email}}
+                </div>
+                <div class="first-item">
+                  <div [ngClass]="{'female-container': persona.sexo == 'femenino'}">
+                    Sexo: {{persona.sex}}
+                  </div>
+                </div>
+              </div>
+              <div class="flex-20 flex-h">
+                <div>
+                  <mat-checkbox (change)="editarPersona(persona, $event)">Editar</mat-checkbox>
+                </div>
+                <div style="padding-left: 1em;">
+                  <mat-icon style="color: white;" (click)="borrarPersona(persona)">delete</mat-icon>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="flex-20 flex-h">
-          <div>
-            <mat-checkbox (change)="editarPersona(persona, $event)">Editar</mat-checkbox>
-          </div>
-          <div style="padding-left: 1em;">
-            <mat-icon style="color: white;" (click)="borrarPersona(persona)">delete</mat-icon>
-          </div>
-        </div>
-      </div>
     </div>
+    
 
     <div class="flex-50" *ngIf="personaSeleccionada.showForm">
       <app-form-persona [persona]="personaSeleccionada" (closeForm)="close($event)"></app-form-persona>

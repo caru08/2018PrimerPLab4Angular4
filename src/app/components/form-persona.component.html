@@ -1,4 +1,6 @@
 <div style="padding-left: 2em; padding-top: 20px;">
+  <loader [loading]="loading"></loader>
+
   <form #formPersona="ngForm">
     <div class="flex-h-center flex-v">
       <div class="flex-v">
@@ -9,13 +11,15 @@
       </div>
       <div class="flex-v">
         <mat-form-field>
-          <input matInput type="email" placeholder="Email" #email="ngModel" name="email" [(ngModel)]="persona.email" required>
+          <input matInput type="email" placeholder="Mail" #email="ngModel" name="email"
+          [(ngModel)]="persona.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
         </mat-form-field>
         <span class="label-danger error-label" *ngIf="!email.valid && email.touched">Email requerido o invalido</span>
+
       </div>
       <div class="flex-v">
         <mat-form-field>
-          <input matInput type="password" placeholder="Passwords" #pass="ngModel" name="pass" [(ngModel)]="persona.pass" required>
+          <input matInput type="password" placeholder="Contraseña" #pass="ngModel" name="pass" [(ngModel)]="persona.pass" required>
         </mat-form-field>
         <span class="label-danger error-label" *ngIf="!pass.valid && pass.touched">Email requerido o invalido</span>
       </div>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {  Router } from '@angular/router';
 import { LoginService } from './services/login.service';
-
+import { SnackMessage } from './services/snackmessage.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,8 @@ import { LoginService } from './services/login.service';
 export class AppComponent {
 
   constructor(private router: Router,
-              private loginService: LoginService){
+              private loginService: LoginService,
+              private snackMessage: SnackMessage){
     this.checkLogin();
   }
 
@@ -26,7 +27,7 @@ export class AppComponent {
       console.log(response);
     }, (error) => {
       this.router.navigate(['./Login' ]);
-      console.log("ocurrio un error", error);
+      console.log("ocurrio un error", error);      
     });
   }
 }

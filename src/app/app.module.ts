@@ -27,6 +27,7 @@ import { AppComponent } from './app.component';
 import { ListadoPersonasComponent } from './components/listadoPersonas.component';
 import { FormPersonaComponent } from './components/form-persona.component';
 import { LoginFormComponent } from './components/login-form.component';
+import { LoaderComponent } from './components/loader.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { LoginFormComponent } from './components/login-form.component';
     ListadoPersonasComponent,
     FormPersonaComponent,
     LoginFormComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
